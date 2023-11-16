@@ -17,7 +17,11 @@ LOG_MODULE_REGISTER(zmk, CONFIG_ZMK_LOG_LEVEL);
 #include <zmk/display.h>
 #include <drivers/ext_power.h>
 
-int main(void) {
+#ifdef CONFIG_ZMK_MOUSE
+#include <zmk/mouse.h>
+#endif /* CONFIG_ZMK_MOUSE */
+
+void main(void) {
     LOG_INF("Welcome to ZMK!\n");
 
     if (zmk_kscan_init(DEVICE_DT_GET(ZMK_MATRIX_NODE_ID)) != 0) {
@@ -28,5 +32,7 @@ int main(void) {
     zmk_display_init();
 #endif /* CONFIG_ZMK_DISPLAY */
 
-    return 0;
+#ifdef CONFIG_ZMK_MOUSE
+    zmk_mouse_init();
+#endif /* CONFIG_ZMK_MOUSE */
 }
